@@ -81,9 +81,10 @@ fabric.properties
 
 *.iml
 modules.xml
-.idea/misc.xml
+*misc.xml
 *.ipr
-.idea/vcs.xml
+*vcs.xml
+*workspace.xml
 
 # Sonarlint plugin
 .idea/sonarlint
