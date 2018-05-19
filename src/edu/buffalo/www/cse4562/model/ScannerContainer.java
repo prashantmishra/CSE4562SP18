@@ -1,5 +1,7 @@
 package edu.buffalo.www.cse4562.model;
 
+import java.util.List;
+
 public class ScannerContainer implements Container{
 
   
@@ -7,7 +9,7 @@ public class ScannerContainer implements Container{
   Class<? extends Node> receiver;
   private String tableName;
   private int columnId;
-  private int value;
+  private List<Long> values;
   
   public ScannerContainer(Class sender, Class receiver,String tableName, int columnId) {
     this.sender = sender;
@@ -39,20 +41,28 @@ public class ScannerContainer implements Container{
   public void setTableName(String tableName) {
     this.tableName = tableName;
   }
-
+/*
   public int getValue() {
     return value;
   }
 
   public void setValue(int value) {
     this.value = value;
-  }
+  }*/
   public int getColumnId() {
     return columnId;
   }
 
   public void setColumnId(int columnId) {
     this.columnId = columnId;
+  }
+
+  public List<Long> getValues() {
+    return values;
+  }
+
+  public void setValues(List<Long> values) {
+    this.values = values;
   }
 
   

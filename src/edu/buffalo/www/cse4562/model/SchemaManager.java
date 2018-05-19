@@ -1,5 +1,6 @@
 package edu.buffalo.www.cse4562.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class SchemaManager {
   private static final Map<String, Integer> tableName2Id = new HashMap<>();
   private static final Map<Integer, Map<String, Integer>> tableId2ColName2Id = new HashMap<>();
   private static final Map<Integer, Map<Integer, Integer>> tableId2ColId2Index = new HashMap<>();
-  private static final Map<Integer, Map<Integer, Map<Integer, Long>>> tableId2ColId2IndexNew = new HashMap<>();
+  private static final Map<Integer, Map<Integer, Map<Integer, List<Long>>>> tableId2ColId2IndexNew = new HashMap<>();
 
   /**
    * Add table schema entry. Assign a table id to the table name and assign
@@ -283,12 +284,12 @@ public class SchemaManager {
   }
 
   public static void addRandomIndex(
-      Map<Integer, Map<Integer, Map<Integer, Long>>> tableId2ColId2Offset) {
+      Map<Integer, Map<Integer, Map<Integer, List<Long>>>> tableId2ColId2Offset) {
 
     tableId2ColId2IndexNew.putAll(tableId2ColId2Offset);
   }
 
-  public static long getRandomIndexOffset(Integer tableId, Integer columnId,
+  public static List<Long> getRandomIndexOffset(Integer tableId, Integer columnId,
       Integer columnValue) {
 
     if (tableId2ColId2IndexNew.containsKey(tableId)
@@ -298,6 +299,6 @@ public class SchemaManager {
 
       return tableId2ColId2IndexNew.get(tableId).get(columnId).get(columnValue);
     }
-    return -1;
+    return new ArrayList<>();
   }
 }

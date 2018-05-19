@@ -203,7 +203,8 @@ public class IndexNestedJoinOperator extends Node implements BinaryOperator,Join
     for (ColumnCell columnCell : tuple.getColumnCells()) {
       if (columnCell.getTableId() == leftTableId
           && columnCell.getColumnId() == leftColumnId) {
-        scannerContainer.setValue((int)SchemaManager.getRandomIndexOffset(rightTableId, rightColumnId, (int)columnCell.getCellValue().toLong()));
+        //scannerContainer.setValue((int)SchemaManager.getRandomIndexOffset(rightTableId, rightColumnId, (int)columnCell.getCellValue().toLong()));
+        scannerContainer.setValues(SchemaManager.getRandomIndexOffset(rightTableId, rightColumnId, (int)columnCell.getCellValue().toLong()));
         return scannerContainer;
       }
     }
