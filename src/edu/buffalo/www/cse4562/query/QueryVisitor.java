@@ -77,14 +77,14 @@ public class QueryVisitor implements StatementVisitor, SqlVisitor {
     final TableSchema tableSchema = new TableSchema(tableName,
         createStatement.getColumnDefinitions());
     SchemaManager.addTableSchema(tableName, tableSchema);
-    try {
+    /*try {
 
       // do pre-processing
       Preprocessor.preprocess(tableSchema, createStatement.getIndexes());
 
     } catch (Throwable t) {
       System.err.println("Exception while preprocessing: " + t.getMessage());
-    }
+    }*/
   }
 
   @Override
