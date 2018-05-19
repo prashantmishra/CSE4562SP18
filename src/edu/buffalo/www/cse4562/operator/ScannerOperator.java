@@ -82,15 +82,15 @@ public class ScannerOperator extends Node implements UnaryOperator {
       indexedFile = new RandomAccessFile(getIndexPath(container),"rw");
       }
     
-    if(container.getValue() == -1) {
+    if(CollectionUtils.isEmpty(container.getValues())) {
       return new ArrayList<>();
     }
-    
-    indexedFile.seek(container.getValue());
+    Collection<Tuple> tuples = new ArrayList<>();
+    for(Long value:container.getValues()) {
+    indexedFile.seek(value);
     final String line = indexedFile.readLine();
     String[] record = line.split(ApplicationConstants.DATA_DELIMITER);
     final List<ColumnCell> columnCells = new ArrayList<>();
-    Collection<Tuple> tuples = new ArrayList<>();
 
     final TableSchema tableSchema = SchemaManager
         .getTableSchema(config.getTableName());
@@ -112,7 +112,7 @@ public class ScannerOperator extends Node implements UnaryOperator {
       } // for
 
       tuples.add(new Tuple(columnCells));
-    
+    }
     return tuples;
   }
   

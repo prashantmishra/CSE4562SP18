@@ -77,8 +77,8 @@ public class Preprocessor {
         continue;
       }
 
-      if ((colDef.getColumnSpecStrings().get(0).equals(PRIMARY))){
-        //  || colDef.getColumnSpecStrings().get(0).equals(REFERENCES))) {
+      if ((colDef.getColumnSpecStrings().get(0).equals(PRIMARY))
+          || colDef.getColumnSpecStrings().get(0).equals(REFERENCES)) {
         // add column details to the map
         SchemaManager.addIndexToColumn(tableSchema.getTableName(),
             colDef.getColumnName());

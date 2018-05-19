@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import edu.buffalo.www.cse4562.model.Pair;
@@ -32,13 +34,13 @@ public class RandomIndex {
    * @param tableName
    * @throws IOException
    */
-  public static Map<Integer, Map<Integer, Map<Integer, Long>>> indexData(String filepath,
+  public static Map<Integer, Map<Integer, Map<Integer, List<Long>>>> indexData(String filepath,
       final Map<Integer, Integer> col2Index,
       final Map<Integer, Pair<Integer, Integer>> columnStats, String tableName)
       throws IOException {
 
     final int tableId = SchemaManager.getTableId(tableName);
-    final Map<Integer, Map<Integer, Map<Integer, Long>>> tableId2ColId2Offset = new HashMap<>();
+    final Map<Integer, Map<Integer, Map<Integer, List<Long>>>> tableId2ColId2Offset = new HashMap<>();
     for (final int columnId : col2Index.keySet()) {
       if(tableId2ColId2Offset.containsKey(tableId)) {
         tableId2ColId2Offset.get(tableId).putAll(indexDatByCol(tableName, columnId));
@@ -57,14 +59,14 @@ public class RandomIndex {
    * @return
    * @throws IOException
    */
-  public static Map<Integer, Map<Integer, Long>> indexDatByCol(String tableName, int columnId)
+  public static Map<Integer, Map<Integer, List<Long>>> indexDatByCol(String tableName, int columnId)
       throws IOException {
     FileReader reader = null;
     BufferedReader bufferedReader = null;
     RandomAccessFile randomAccessFile = null;
 
-    final Map<Integer, Map<Integer, Long>> colId2Id2Offset = new HashMap<>();
-    final Map<Integer, Long> id2Offset = new HashMap<>();
+    final Map<Integer, Map<Integer, List<Long>>> colId2Id2Offset = new HashMap<>();
+    final Map<Integer, List<Long>> id2Offset = new HashMap<>();
     try {
       // Phase 2: Scan for bucketing
 
@@ -87,7 +89,16 @@ public class RandomIndex {
 
         randomAccessFile.writeBytes(line);
         randomAccessFile.writeBytes("\n");
-        id2Offset.put(Integer.parseInt(record[columnId - 1]), currOffset);
+        
+        
+        if(id2Offset.containsKey(Integer.parseInt(record[columnId - 1]))) {
+          id2Offset.get(Integer.parseInt(record[columnId - 1])).add(currOffset); 
+          continue;
+        }
+        
+        List<Long> list = new ArrayList<>();
+        list.add(currOffset);
+        id2Offset.put(Integer.parseInt(record[columnId - 1]), list);
 
       } // while
 
